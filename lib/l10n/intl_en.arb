@@ -1,0 +1,21 @@
+{
+  "hi": "Hello",
+  "emailValid": "Email is invalid",
+  "userName": "username",
+  "password": "password",
+  "createAccount": "Create Account",
+  "textContinue": "continue",
+  "textGetStarted": "get started",
+  "textNeedHelp": "Need Help?",
+  "textEmail": "email",
+  "uploadHuntImage": "Upload Hunt Images Here",
+  "required":"required",
+  "textLogin": "Login",
+  "textForgotPassword": "Forgot Password",
+  "textLogo": "Logo",
+  "emptyScreen": "Empty Screen",
+  "home": "Home",
+  "store": "Store",
+  "myBag": "My Bag",
+  "profile": "Profile"
+}
