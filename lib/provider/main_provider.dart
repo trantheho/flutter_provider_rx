@@ -1,9 +1,8 @@
 
-import 'package:flutter_provider_rx/base/base_provider.dart';
-import 'package:flutter_provider_rx/models/book_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_provider_rx/models/user_model.dart';
 
-class MainProvider extends BaseProvider {
+class MainProvider extends ChangeNotifier {
   List<String> _userPosts = [];
   List<String> get userPosts => _userPosts;
 
@@ -13,7 +12,7 @@ class MainProvider extends BaseProvider {
 
   set updateCurrentUser(User user){
     _currentUser = user;
-    notify();
+    notifyListeners();
   }
 
   Future<User> getCurrentUser() async {

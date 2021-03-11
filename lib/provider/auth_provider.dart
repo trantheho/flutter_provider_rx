@@ -1,6 +1,6 @@
-import 'package:flutter_provider_rx/base/base_provider.dart';
+import 'package:flutter/foundation.dart';
 
-class AuthProvider extends BaseProvider{
+class AuthProvider extends ChangeNotifier{
 
   DateTime _expiry = DateTime.fromMillisecondsSinceEpoch(0);
 
