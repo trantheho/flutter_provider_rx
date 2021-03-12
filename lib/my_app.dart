@@ -117,6 +117,7 @@ class _MyAppState extends State<MyApp> {
       Logging.log('connect network: $network');
       if(!network){
         // show alert network
+        AppHelper.showNetworkDialog("Network", "Network not connected");
       }
     });
   }

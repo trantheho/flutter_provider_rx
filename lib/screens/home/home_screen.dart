@@ -18,7 +18,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
 
   final List<Book> listBook = [
     Book(
-      image: "https://lh3.googleusercontent.com/proxy/SjYAjWzYd0YK1vsvx-br1XZb5y-HMQSSkYHu6xwaimdSFRnohnc3uDJqpGWe1aN3aXRVYguwuVeVfHPo8zx5VDnONmOLPiqJx4cehfdT",
+      image: "http://cdn5.truyentranh8.net/u/ngocph301/11260-tay-du/079-272767/001.jpg",
       name: "Tây Du",
       subName: "The Ton Ngo Khong",
     ),

@@ -54,7 +54,9 @@ class Api {
 
   Future<Response<dynamic>> dioExceptionWrapper(Function() dioApi) async {
     try {
+
       return await dioApi();
+
     } catch (error) {
       var errorMessage = error.toString();
       if (error is DioError && error.type == DioErrorType.RESPONSE) {
