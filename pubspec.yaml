@@ -15,18 +15,18 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.0
-  provider: ^4.3.3
-  rxdart: ^0.25.0
-  connectivity: ^2.0.1 # package listen network status
-  flutter_spinkit: ^4.1.2+1 # loading ui in app
+  provider: ^5.0.0
+  rxdart: ^0.26.0
+  connectivity: ^3.0.3 # package listen network status
+  flutter_spinkit: ^5.0.0 # loading ui in app
   toast: ^0.1.5 # show toast in app
-  animations: ^1.1.2 # animation for UX
+  animations: ^2.0.0 # animation for UX
   platform_action_sheet: ^0.0.3
   dio: ^3.0.10 # service + api
-  url_launcher: ^5.7.10 # launcher url
-  image: ^2.1.19
-  hive: ^1.4.4+1
-  path_provider: ^1.6.24
+  url_launcher: ^6.0.2 # launcher url
+  image: ^3.0.2
+  hive: ^2.0.0
+  path_provider: ^2.0.1
 
 dev_dependencies:
   flutter_test:
