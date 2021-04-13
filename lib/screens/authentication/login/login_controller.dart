@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_provider_rx/models/book_model.dart';
 import 'package:flutter_provider_rx/models/user_model.dart';
 import 'package:flutter_provider_rx/provider/book_provider.dart';
-import 'package:flutter_provider_rx/provider/main_provider.dart';
 import 'package:flutter_provider_rx/service/handle_error.dart';
 import 'package:flutter_provider_rx/usecase/auth_usecase/login_usecase.dart';
 import 'package:flutter_provider_rx/utils/app_helper.dart';
@@ -14,7 +13,6 @@ class LoginController {
   final loading = BehaviorSubject<bool>();
   final phoneWarning = BehaviorSubject<String>();
   final passwordWarning = BehaviorSubject<String>();
-
 
   String phoneNumber = '';
   String password = '';

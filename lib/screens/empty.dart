@@ -2,14 +2,28 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_provider_rx/generated/l10n.dart';
+import 'package:flutter_provider_rx/widget/paging_text_view.dart';
 import 'package:flutter_provider_rx/utils/app_assets.dart';
 import 'package:flutter_provider_rx/utils/app_colors.dart';
 import 'package:flutter_provider_rx/utils/styles.dart';
-import 'dart:math' as math;
+
 
 import 'package:rxdart/rxdart.dart';
 
 class EmptyScreen extends StatelessWidget {
+  final sampleText = '''
+Flutter is an open-source UI software development kit created by Google. 
+It is used to develop applications for Android, iOS, Linux, Mac, Windows, Google Fuchsia,[4] and the web from a single codebase.[5]
+The first version of Flutter was known as codename "Sky" and ran on the Android operating system. 
+It was unveiled at the 2015 Dart developer summit,[6] with the stated intent of being able to render consistently at 120 frames per second.[7]
+During the keynote of Google Developer Days in Shanghai, Google announced Flutter Release Preview 2, which is the last big release before Flutter 1.0. 
+On December 4, 2018, Flutter 1.0 was released at the Flutter Live event, denoting the first "stable" version of the Framework. 
+On December 11, 2019, Flutter 1.12 was released at the Flutter Interactive event.[8]
+On May 6, 2020, the Dart SDK in version 2.8 and the Flutter in version 1.17.0 were released, where support was added to the Metal API, improving performance on iOS devices (approximately 50%), new Material widgets, and new network tracking.
+On March 3, 2021, Google released Flutter 2 during an online Flutter Engage event. 
+This major update brought official support for web-based applications as well as early-access desktop application support for Windows, MacOS, and Linux.[9]
+On March 3, 2021, Google released Flutter 2 during an online Flutter Engage event.
+''';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,205 +37,37 @@ class EmptyScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: Container(
-
-      ),
-    );
-  }
-}
-
-class PagingTextField extends StatefulWidget {
-  @override
-  _PagingTextFieldState createState() => _PagingTextFieldState();
-}
-
-class _PagingTextFieldState extends State<PagingTextField> {
-  final pageView = BehaviorSubject<int>();
-  List<TextEditingController> listController = [];
-  List<FocusNode> listFocus = [];
-  List<Widget> listWidget = [];
-  TextEditingController textController =  TextEditingController();
-
-  final double fontSize = 14;
-  int listPage = 1;
-  PageController controller = PageController();
-  int currentIndex = 0;
-
-  @override
-  void initState() {
-    super.initState();
-    listController.add(TextEditingController());
-    listFocus.add(FocusNode());
-  }
-
-  @override
-  void dispose() {
-    pageView.close();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Container(
-          height: 100,
-          width: MediaQuery.of(context).size.width,
-          child: LayoutBuilder(
-            builder: (context, size) {
-              var layout = TextPainter(
-                text: TextSpan(
-                  style: AppTextStyle.normal,
-                ),
-                textDirection: TextDirection.ltr,
-              );
-
-              layout.layout(maxWidth: size.maxWidth);
-
-              final height = layout.height;
-              final maxLine = (size.maxHeight - 20) ~/ height;
-              print("max line: $maxLine");
-
-              return StreamBuilder<int>(
-                stream: pageView.stream,
-                initialData: 0,
-                builder: (context, snapshot) {
-                  return SizedBox(
-                    child: PageView.builder(
-                      controller: controller,
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, index) {
-                        return TextFieldPage(
-                          index: index,
-                          focusNode: listFocus[index],
-                          textController: listController[index],
-                          maxLine: maxLine,
-                          size: size,
-                          onOverLap: (value){
-                            if(!value){
-                              addPage();
-                            }
-                          },
-                        );
-                      },
-                      itemCount: listPage, // Can be null
+      body: Center(
+        child: InkWell(
+          onTap: () {
+            showDialog(context: context,builder: (context) => Scaffold(
+              body: LayoutBuilder(
+                builder: (context, size) {
+                  print("layout size: $size");
+                  return PagingText(
+                    sampleText,
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 30,
                     ),
                   );
                 }
-              );
-            }
+              ),
+            ),
+            );
+          },
+          child: Container(
+            height: 50,
+            width: 100,
+            color: Colors.red,
           ),
         ),
       ),
     );
   }
-  void addPage(){
-    listPage++;
-    currentIndex++;
-    TextEditingController textEditingController = TextEditingController();
-    listController.add(textEditingController);
-    FocusNode focusNode = FocusNode();
-    listFocus.add(focusNode);
-    pageView.add(listPage);
-    listFocus[currentIndex].requestFocus();
-    controller.jumpToPage(currentIndex);
-    print("add page");
-  }
 }
 
-class TextFieldPage extends StatefulWidget {
-  final int index;
-  final int maxLine;
-  final BoxConstraints size;
-  final FocusNode focusNode;
-  final TextEditingController textController;
-  final Function(bool) onOverLap;
 
-  TextFieldPage({
-    this.index,
-    this.maxLine,
-    this.size,
-    this.onOverLap,
-    this.focusNode,
-    this.textController,
-  });
-
-  @override
-  _TextFieldPageState createState() => _TextFieldPageState();
-}
-
-class _TextFieldPageState extends State<TextFieldPage> with AutomaticKeepAliveClientMixin {
-  double textSpanWidth = 0;
-
-  @override
-  bool get wantKeepAlive => true;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      color: Colors.blue,
-      child: TextField(
-        maxLines: widget.maxLine,
-        focusNode: widget.focusNode,
-        controller: widget.textController,
-        style: TextStyle(fontSize: 14, color: Colors.black),
-        decoration: InputDecoration(
-          border: InputBorder.none,
-          contentPadding: EdgeInsets.zero,
-          hintText: "input ${widget.index}",
-        ),
-        onChanged: (value){
-          bool isFit = _checkTextFits(value, widget.maxLine, widget.size);
-          widget.onOverLap(isFit);
-          print("current fit: $isFit");
-        },
-      ),
-    );
-  }
-
-  bool _checkTextFits(String text, int maxLines, BoxConstraints constraints) {
-    var span = TextSpan(
-      style: AppTextStyle.normal,
-      text: text,
-    );
-
-    var word = span.toPlainText();
-
-    var tp = TextPainter(
-      text: TextSpan(style: span.style, text: word),
-      textDirection: TextDirection.ltr,
-      textScaleFactor: 1.0,
-      maxLines: maxLines,
-    );
-
-    tp.layout(maxWidth: constraints.maxWidth);
-
-    if (span.text.length > 0) {
-      // replace all \n with 'space with \n' to prevent dropping last character to new line
-      String textWithSpaces = span.text.replaceAll('\n', ' \n');
-      // \n is 10, <space> is 32
-      if (span.text.codeUnitAt(span.text.length - 1) != 10 &&
-          span.text.codeUnitAt(span.text.length - 1) != 32) {
-        textWithSpaces += ' ';
-      }
-      var secondPainter = TextPainter(
-        text: TextSpan(
-          text: textWithSpaces,
-          style: span.style,
-        ),
-        textDirection: TextDirection.ltr,
-        textScaleFactor: 1.0,
-        maxLines: maxLines,
-      );
-      secondPainter.layout(maxWidth: constraints.maxWidth);
-    }
-
-    return !(tp.didExceedMaxLines ||
-        tp.height > constraints.maxHeight ||
-        tp.width > constraints.maxWidth);
-  }
-}
 
 
 
