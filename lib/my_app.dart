@@ -6,11 +6,13 @@ import 'package:flutter_provider_rx/models/user_model.dart';
 import 'package:flutter_provider_rx/provider/book_provider.dart';
 import 'package:flutter_provider_rx/screens/authentication/login/login_controller.dart';
 import 'package:flutter_provider_rx/screens/authentication/login/login_screen.dart';
+import 'package:flutter_provider_rx/screens/empty.dart';
 import 'package:flutter_provider_rx/screens/main_screen/main.dart';
 import 'package:flutter_provider_rx/provider/main_provider.dart';
 import 'package:flutter_provider_rx/service/network_util.dart';
 import 'package:flutter_provider_rx/usecase/app_usecase.dart' as appUseCase;
 import 'package:flutter_provider_rx/utils/app_helper.dart';
+import 'package:flutter_provider_rx/widget/paging_text_field.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
@@ -96,7 +98,7 @@ class _MyAppState extends State<MyApp> {
 
             final user = context.watch<MainProvider>().currentUser;
 
-            return user != null ? MainScreen() : LoginScreen();
+            return user != null ? MainScreen() : EmptyScreen();
           }
           else{
             return AppLoading();

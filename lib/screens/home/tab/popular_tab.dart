@@ -21,7 +21,7 @@ class PopularTab extends StatelessWidget {
             padding: const EdgeInsets.only(top: 20, right: 20),
             child: ItemBookRating(
             book: list[index],
-            onItemPressed: () => AppRoutes.navigatePush(
+            onItemPressed: () => AppRoutes().push(
                 context,
                 AppScreenName.detail,
                 BookDetailScreen(
