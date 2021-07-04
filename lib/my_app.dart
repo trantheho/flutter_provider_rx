@@ -1,23 +1,21 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:ui' as ui;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_provider_rx/models/user_model.dart';
 import 'package:flutter_provider_rx/provider/book_provider.dart';
-import 'package:flutter_provider_rx/screens/authentication/login/login_controller.dart';
-import 'package:flutter_provider_rx/screens/authentication/login/login_screen.dart';
-import 'package:flutter_provider_rx/screens/empty.dart';
-import 'package:flutter_provider_rx/screens/main_screen/main.dart';
 import 'package:flutter_provider_rx/provider/main_provider.dart';
+import 'package:flutter_provider_rx/screens/authentication/login/login_screen.dart';
+import 'package:flutter_provider_rx/screens/main_screen/main.dart';
 import 'package:flutter_provider_rx/service/network_util.dart';
 import 'package:flutter_provider_rx/usecase/app_usecase.dart' as appUseCase;
 import 'package:flutter_provider_rx/utils/app_helper.dart';
-import 'package:flutter_provider_rx/widget/paging_text_field.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
-import 'dart:ui' as ui;
+
 import 'generated/l10n.dart';
 import 'globals.dart';
 import 'widget/loading.dart';
@@ -35,8 +33,6 @@ Future<void> initMyApp() async {
       providers: [
         ChangeNotifierProvider(create: (_) => MainProvider()),
         ChangeNotifierProvider(create: (_) => BookProvider()),
-        /*/// ROOT CONTEXT, Allows Commands to retrieve a 'safe' context that is not tied to any one view. Allows them to work on async tasks without issues.
-        Provider<BuildContext>(create: (c) => c),*/
       ],
       child: Builder(builder: (context) {
         appUseCase.setContext(context);
@@ -52,12 +48,11 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final mainAppBloc = MainAppBloc.instance;
   StreamSubscription networkSubscription;
 
   @override
   void dispose() {
-    mainAppBloc.dispose();
+    appController.dispose();
     super.dispose();
   }
 
@@ -81,7 +76,7 @@ class _MyAppState extends State<MyApp> {
           children: [
             child,
             StreamBuilder<bool>(
-                stream: mainAppBloc.appLoading.stream,
+                stream: appController.loading.stream,
                 initialData: false,
                 builder: (context, snapshot) {
                   return snapshot.data ? AppLoading() : SizedBox();
@@ -98,7 +93,7 @@ class _MyAppState extends State<MyApp> {
 
             final user = context.watch<MainProvider>().currentUser;
 
-            return user != null ? MainScreen() : EmptyScreen();
+            return user != null ? MainScreen() : LoginScreen();
           }
           else{
             return AppLoading();
@@ -119,36 +114,32 @@ class _MyAppState extends State<MyApp> {
       Logging.log('connect network: $network');
       if(!network){
         // show alert network
-        AppHelper.showNetworkDialog("Network", "Network not connected");
+        AppHelper.dialogController.showNetworkDialog("Network", "Network not connected");
       }
     });
   }
-
 }
 
-class MainAppBloc {
-  MainAppBloc._private();
-  static final instance = MainAppBloc._private();
+class AppController {
+  AppController._private();
+  static final instance = AppController._private();
+  final _appLoading = BehaviorSubject<bool>();
+  bool _showAlertTimeOut = false;
 
-  final appLoading = BehaviorSubject<bool>();
-  final pageIndex = BehaviorSubject<int>();
+  get loading => _appLoading;
+  get alertTimeout => _showAlertTimeOut;
 
-  PageController _pageController;
-  AnimationController _bottomAppBarController;
+  void showLoading(){
+    _appLoading.add(true);
+  }
 
-  bool showAlertTimeOut = false;
+  void hideLoading(){
+   _appLoading.add(false);
+  }
 
   void dispose(){
-    appLoading.close();
-    pageIndex.close();
-    _pageController.dispose();
-    _bottomAppBarController.dispose();
+    _appLoading.close();
   }
-
-  void initPageController(PageController controller, AnimationController bottomAppBarController){
-    _pageController = controller;
-    _bottomAppBarController = bottomAppBarController;
-  }
-
-
 }
+
+final appController = AppController.instance;

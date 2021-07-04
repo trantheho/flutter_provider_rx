@@ -3,9 +3,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 
 class AppLoading extends StatelessWidget {
-  final String message;
-
-  const AppLoading({Key key, this.message}) : super(key: key);
+  const AppLoading({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,14 +23,6 @@ class AppLoading extends StatelessWidget {
                   child: SpinKitFadingCircle(color: Colors.white),
                   alignment: Alignment.center,
                 ),
-                Container(
-                  padding: EdgeInsets.all(20),
-                  child: Text(
-                    '',
-                    style: TextStyle(color: Colors.white),
-                    textAlign: TextAlign.center,
-                  ),
-                )
               ],
             ),
           ),

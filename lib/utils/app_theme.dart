@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'app_colors.dart';
+import 'styles.dart';
 
 ThemeData appLightTheme(BuildContext context) {
   final base = ThemeData.light();

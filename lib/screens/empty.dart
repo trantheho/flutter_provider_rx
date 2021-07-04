@@ -2,11 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_provider_rx/generated/l10n.dart';
 import 'package:flutter_provider_rx/widget/divider_dotted_line.dart';
-import 'package:flutter_provider_rx/widget/paging_text_view.dart';
-import 'package:flutter_provider_rx/utils/app_assets.dart';
-import 'package:flutter_provider_rx/utils/app_colors.dart';
 import 'package:flutter_provider_rx/utils/styles.dart';
-import 'package:rxdart/rxdart.dart';
 
 class EmptyScreen extends StatelessWidget {
   @override
@@ -75,3 +71,4 @@ class EmptyScreen extends StatelessWidget {
     );
   }
 }
+

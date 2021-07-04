@@ -40,7 +40,6 @@ class AuthenticationApi extends Api{
 
   /// logout
   Future<Response> logout() async {
-
     final String _url = '$appApiBaseUrl/logout';
     final Map<String, dynamic> _headers = await getAuthorizedHeader();
     final Options _options = Options(headers: _headers);

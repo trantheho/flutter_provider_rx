@@ -5,12 +5,11 @@
  */
 
 import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_provider_rx/service/store/hive_store.dart';
+import 'package:flutter_provider_rx/service/local_storage/hive_storage.dart';
 
-class Api {
+abstract class Api {
   final String appApiBaseUrl = 'api_url';//AppConstants.apiURL;
   final Dio dio = new Dio();
 
@@ -20,19 +19,13 @@ class Api {
     }
   }
 
-  Future<void> checkInternetIfHave() async {
+  Future<void> _lookupInternet() async {
     try {
       final result = await InternetAddress.lookup('google.com');
-
       if (result.isEmpty && result[0].rawAddress.isEmpty){
-        //show toast internet error
-        //AppHelper.showToast(AppString.offlineText);
         return Future.error('internet is off');
       }
-
     } on SocketException catch (_) {
-      //show toast internet error
-      //AppHelper.showToast(AppString.offlineText);
       return Future.error('internet is off');
     }
   }
@@ -45,7 +38,7 @@ class Api {
 
   Future<Map<String, String>> getAuthorizedHeader() async {
     Map<String, String> _header = await getHeader();
-    String accessToken = await HiveStore.instance.getAccessToken();
+    String accessToken = await HiveStorage.instance.getAccessToken();
     _header.addAll({
       "Authorization": "Bearer $accessToken",
     });
@@ -54,9 +47,8 @@ class Api {
 
   Future<Response<dynamic>> dioExceptionWrapper(Function() dioApi) async {
     try {
-
+      await _lookupInternet();
       return await dioApi();
-
     } catch (error) {
       var errorMessage = error.toString();
       if (error is DioError && error.type == DioErrorType.RESPONSE) {

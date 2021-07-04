@@ -2,7 +2,5 @@
 import 'api/authentication_api.dart';
 
 class AppApi {
-  static final authen = AuthenticationApi.instance;
-
-
+  static final auThen = AuthenticationApi.instance;
 }

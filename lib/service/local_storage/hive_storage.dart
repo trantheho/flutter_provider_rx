@@ -1,8 +1,8 @@
 import 'package:hive/hive.dart';
 
-class HiveStore {
-  HiveStore._private();
-  static final HiveStore instance = HiveStore._private();
+class HiveStorage {
+  HiveStorage._private();
+  static final HiveStorage instance = HiveStorage._private();
 
 
   Future<String> getAccessToken() async {

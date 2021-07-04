@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_provider_rx/generated/l10n.dart';
-import 'package:flutter_provider_rx/my_app.dart';
 import 'package:flutter_provider_rx/screens/home/home_screen.dart';
-import 'package:flutter_provider_rx/utils/app_assets.dart';
-import 'package:flutter_provider_rx/utils/app_colors.dart';
+import 'package:flutter_provider_rx/screens/main_screen/main_controller.dart';
 import 'package:flutter_provider_rx/utils/app_helper.dart';
 import 'package:flutter_provider_rx/utils/styles.dart';
 
@@ -15,7 +13,7 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
-  final mainAppBloc = MainAppBloc.instance;
+  final mainController = MainController.instance;
   AnimationController bottomAppBarController;
   Animation<double> bottomAppBarCurve;
   PageController controller;
@@ -37,7 +35,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
       curve: standardEasing,
       reverseCurve: standardEasing.flipped,
     );
-    mainAppBloc.initPageController(controller, bottomAppBarController);
+    mainController.initPageController(controller, bottomAppBarController);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       // call api
     });
@@ -47,7 +45,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   @override
   void dispose() {
     controller.dispose();
-    mainAppBloc.dispose();
+    mainController.dispose();
     super.dispose();
   }
 
@@ -102,7 +100,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
       child: Container(
         height: kBottomNavigationBarHeight + MediaQuery.of(context).padding.bottom,
         child: StreamBuilder(
-            stream: mainAppBloc.pageIndex.stream,
+            stream: mainController.pageIndex.stream,
             initialData: 0,
             builder: (context,AsyncSnapshot<int> pageIndex) {
               indexTab = pageIndex.data;
@@ -165,7 +163,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
               ),
             ),
             Text(
-              '$title',
+              title,
               style: AppTextStyle.normal,
             ),
           ],
@@ -176,10 +174,6 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
 
 
   void tapBottomBar(int index) {
-    AppHelper.monkeyTapping(
-        durationTapping: Duration(milliseconds: 100),
-        action: () {
-          mainAppBloc.pageIndex.add(index);
-        });
+    AppHelper.distinctClick(action: () => mainController.pageIndex.add(index));
   }
 }
