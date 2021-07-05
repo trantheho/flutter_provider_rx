@@ -20,5 +20,4 @@ abstract class AppUseCase {
   MainProvider get mainProvider => getProvided();
 
   BookProvider get bookProvider => getProvided();
-
 }

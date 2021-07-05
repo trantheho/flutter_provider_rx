@@ -4,13 +4,13 @@ import 'package:flutter_provider_rx/models/user_model.dart';
 import 'package:flutter_provider_rx/my_app.dart';
 import 'package:flutter_provider_rx/provider/book_provider.dart';
 import 'package:flutter_provider_rx/service/handle_error.dart';
-import 'package:flutter_provider_rx/usecase/auth_usecase/login_usecase.dart';
+import 'package:flutter_provider_rx/usecase/auth_usecase/authen_usecase.dart';
 import 'package:flutter_provider_rx/utils/app_helper.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 
 class LoginController {
-  final loading = BehaviorSubject<bool>();
+  final loading = BehaviorSubject<bool>(); //#local screen loading
   final phoneWarning = BehaviorSubject<String>();
   final passwordWarning = BehaviorSubject<String>();
 
@@ -55,9 +55,10 @@ class LoginController {
     if (validInput()) {
       try {
         appController.showLoading();
-        User user = await LoginUseCase()
-            .execute(email: phoneNumber, password: password);
-
+        User user = await AuthenticateUseCase().login(
+          email: phoneNumber,
+          password: password,
+        );
         appController.hideLoading();
 
         if (user != null) {

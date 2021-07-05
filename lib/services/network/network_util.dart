@@ -11,10 +11,10 @@ class NetworkingUtil {
     initLogic();
   }
 
-
   static final NetworkingUtil _instance = new NetworkingUtil._private();
 
   factory NetworkingUtil() => _instance;
+
 
 
   @override
@@ -72,6 +72,4 @@ class NetworkingUtil {
         break;
     }
   }
-
-
 }

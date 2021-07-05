@@ -1,13 +1,18 @@
-
 import 'package:flutter_provider_rx/models/user_model.dart';
-import 'package:flutter_provider_rx/service/app_api.dart';
 import 'package:flutter_provider_rx/usecase/app_usecase.dart';
 
-class LoginUseCase extends AppUseCase {
+class AuthenticateUseCase extends AppUseCase {
 
-  Future<User> execute({String email, String password,}) async {
+  ///
+  Future<void> register(
+      {String email, String password, dynamic userInfo}) async {}
+
+  ///
+  Future<User> login({
+    String email,
+    String password,
+  }) async {
     User _user;
-
     /*final response = AppApi.authen.login(
       email: email,
       password: password,
@@ -20,7 +25,11 @@ class LoginUseCase extends AppUseCase {
     mainProvider.updateCurrentUser = _user;
 
     return mainProvider.currentUser;
-
   }
 
+  ///
+  Future<void> resetPassword({dynamic param}) async {}
+
+  ///
+  Future<void> forgotPassword({dynamic param}) async {}
 }
