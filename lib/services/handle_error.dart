@@ -8,13 +8,14 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:flutter_provider_rx/base/app_controller.dart';
 import 'package:flutter_provider_rx/base/base_response.dart';
 import 'package:flutter_provider_rx/response/error_response.dart';
 import 'package:flutter_provider_rx/utils/app_helper.dart';
 
 import '../my_app.dart';
 
-class HandleError {
+class HandleError extends AppController {
   static HandleError instance = HandleError._private();
 
   HandleError._private();
@@ -46,7 +47,7 @@ class HandleError {
         }
       } else {
         if (!appController.alertTimeout) {
-          AppHelper.dialogController.showDefaultDialog(
+          appController.dialog.showDefaultDialog(
             title: "title",
             message: "message",
           );
@@ -58,7 +59,7 @@ class HandleError {
     }
     if (error is TimeoutException) {
       if (!appController.alertTimeout) {
-        AppHelper.dialogController.showDefaultDialog(
+        appController.dialog.showDefaultDialog(
           title: "title",
           message: "message",
         );

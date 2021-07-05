@@ -21,6 +21,14 @@ class HiveStorage {
     await box.put('accessToken', '');
   }
 
+  Future<void> saveLocale(String languageCode) async {
+    var box = await Hive.openBox('locale');
+    await box.put('languageCode', languageCode);
+  }
 
-
+  Future<String> getLocale() async {
+    var box = await Hive.openBox('locale');
+    String code = await box.get('languageCode');
+    return code;
+  }
 }

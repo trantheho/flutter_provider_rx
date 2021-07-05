@@ -25,7 +25,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return AnnotatedRegion(
       value: AppHelper.statusBarOverlayUI(Brightness.dark),
       child: GestureDetector(
-        onTap: () => AppHelper.hideKeyboard(context),
+        onTap: () => loginController.hideKeyboard(context),
         child: Scaffold(
           body: Stack(
             children: [
@@ -87,7 +87,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               StreamBuilder<bool>(
-                stream: loginController.loading.stream,
+                stream: loginController.screenLoading.stream,
                 initialData: false,
                 builder: (context, snapshot) {
                   return snapshot.data ? AppLoading() : SizedBox();

@@ -1,16 +1,15 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_provider_rx/base/app_controller.dart';
 import 'package:flutter_provider_rx/models/book_model.dart';
 import 'package:flutter_provider_rx/models/user_model.dart';
-import 'package:flutter_provider_rx/my_app.dart';
 import 'package:flutter_provider_rx/provider/book_provider.dart';
-import 'package:flutter_provider_rx/service/handle_error.dart';
+import 'package:flutter_provider_rx/services/handle_error.dart';
 import 'package:flutter_provider_rx/usecase/auth_usecase/authen_usecase.dart';
-import 'package:flutter_provider_rx/utils/app_helper.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 
-class LoginController {
-  final loading = BehaviorSubject<bool>(); //#local screen loading
+class LoginController extends AppController {
+  final screenLoading = BehaviorSubject<bool>(); //#local screen loading
   final phoneWarning = BehaviorSubject<String>();
   final passwordWarning = BehaviorSubject<String>();
 
@@ -45,7 +44,7 @@ class LoginController {
   ];
 
   void dispose() {
-    loading.close();
+    screenLoading.close();
     phoneWarning.close();
     passwordWarning.close();
   }
@@ -54,25 +53,27 @@ class LoginController {
       BuildContext context, String phoneNumber, String password) async {
     if (validInput()) {
       try {
-        appController.showLoading();
+        appController.loading.show();
         User user = await AuthenticateUseCase().login(
           email: phoneNumber,
           password: password,
         );
-        appController.hideLoading();
+        appController.loading.hide();
 
         if (user != null) {
           context.read<BookProvider>().updatePopular = list;
         }
 
         if (user == null) {
-          AppHelper.dialogController
+          appController.dialog
               .showDefaultDialog(title: "Alert", message: "User is null");
         }
       } catch (error) {
-        appController.hideLoading();
+        appController.loading.hide();
         final message = HandleError.instance.checkError(error);
         print("error message: $message");
+        appController.dialog
+            .showDefaultDialog(title: "Alert", message: "Sai roi");
       }
     } else
       return;

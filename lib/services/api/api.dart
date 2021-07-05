@@ -7,7 +7,7 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_provider_rx/service/local_storage/hive_storage.dart';
+import 'package:flutter_provider_rx/services/local_storage/hive_storage.dart';
 
 abstract class Api {
   final String appApiBaseUrl = 'api_url';//AppConstants.apiURL;

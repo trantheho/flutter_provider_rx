@@ -14,9 +14,6 @@ import 'app_constants.dart';
 DateTime clickTime;
 
 class AppHelper {
-  static final dialogController =
-      DialogController(AppGlobals.currentState.overlay.context);
-
   static double screenWidth(BuildContext context) {
     return MediaQuery.of(context).size.width;
   }
@@ -42,22 +39,6 @@ class AppHelper {
           statusBarIconBrightness: androidBrightness ?? Brightness.light);
     }
     return statusBarStyle;
-  }
-
-  /// hide keyboard
-  static void hideKeyboard(context) {
-    FocusScope.of(context).unfocus();
-  }
-
-  static showToaster(String text, [BuildContext context]) {
-    if (text.isEmpty) return;
-    Toast.show(text,
-        context == null ? AppGlobals.currentState.overlay.context : context,
-        duration: Toast.LENGTH_LONG,
-        gravity: Toast.BOTTOM,
-        backgroundRadius: 10,
-        backgroundColor: Color.fromRGBO(0, 0, 0, 0.8),
-        textColor: Colors.white);
   }
 
   static void distinctClick({@required Function action}) {

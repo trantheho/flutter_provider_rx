@@ -1,7 +1,7 @@
 import 'package:flutter_provider_rx/models/user_model.dart';
-import 'package:flutter_provider_rx/usecase/app_usecase.dart';
+import 'package:flutter_provider_rx/usecase/usecase_provider.dart';
 
-class AuthenticateUseCase extends AppUseCase {
+class AuthenticateUseCase extends UseCaseProvider {
 
   ///
   Future<void> register(
