@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_provider_rx/globals.dart';
 import 'package:flutter_provider_rx/provider/base/base_provider.dart';
 import 'package:flutter_provider_rx/services/local_storage/hive_storage.dart';
+import 'package:flutter_provider_rx/utils/app_routes.dart';
 import 'package:flutter_provider_rx/widget/dialog.dart';
 import 'package:toast/toast.dart';
 
@@ -14,6 +15,8 @@ class AppController with BaseProvider{
   final dialog = DialogController(AppGlobals.currentState.overlay.context);
 
   final storage = HiveStorage.instance;
+
+  final routes = AppRoutes();
 
   bool alertTimeout = false;
 
