@@ -28,6 +28,7 @@ dependencies:
   hive: ^2.0.0
   path_provider: ^2.0.1
   fl_chart: ^0.36.1
+  get_it: ^7.2.0 # DI
 
 dev_dependencies:
   flutter_test:

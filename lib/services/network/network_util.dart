@@ -17,7 +17,6 @@ class NetworkingUtil {
 
 
 
-  @override
   void initLogic() async {
     ConnectivityResult result = await (Connectivity().checkConnectivity());
     _getStatusFromResult(result);
