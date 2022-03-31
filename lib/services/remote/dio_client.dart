@@ -8,17 +8,15 @@ import 'package:flutter_provider_rx/services/remote/api_error/api_error.dart';
 
 class DioClient{
   final baseApi = AppConfig.instance.apiBaseUrl;
-  Dio dio;
+  Dio dio = Dio(BaseOptions(
+    baseUrl: AppConfig.instance.apiBaseUrl,
+    contentType: 'application/json',
+    connectTimeout: 30000,
+    sendTimeout: 30000,
+    receiveTimeout: 30000,
+  ));
 
   DioClient(){
-    dio = Dio(BaseOptions(
-      baseUrl: AppConfig.instance.apiBaseUrl,
-      contentType: 'application/json',
-      connectTimeout: 30000,
-      sendTimeout: 30000,
-      receiveTimeout: 30000,
-    ));
-
     if (!kReleaseMode) {
       dio.interceptors.add(LogInterceptor(responseBody: true, requestBody: true));
     }
