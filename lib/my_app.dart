@@ -24,7 +24,7 @@ import 'views/error_screen.dart';
 Future<void> initMyApp() async {
   WidgetsFlutterBinding.ensureInitialized();
   AppConfig.build(Environment.dev);
-  await _initLocaleStorage();
+  await _initLocalStorage();
   runApp(
     MultiProvider(
       providers: [
@@ -43,10 +43,9 @@ Future<void> initMyApp() async {
       }),
     ),
   );
-  //runApp(App());
 }
 
-Future<void> _initLocaleStorage() async {
+Future<void> _initLocalStorage() async {
   Directory directory = await getApplicationDocumentsDirectory();
   Hive.init(directory.path);
 }
