@@ -5,11 +5,11 @@ import 'package:flutter_provider_rx/models/book_model.dart';
 class ItemBook extends StatelessWidget {
   final Book book;
 
-  ItemBook(this.book);
+  const ItemBook(this.book, {Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: 150,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -25,14 +25,14 @@ class ItemBook extends StatelessWidget {
               borderRadius: BorderRadius.circular(16),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 4,
           ),
           Text(
             book.name,
             style: AppTextStyle.medium,
           ),
-          SizedBox(
+          const SizedBox(
             height: 8,
           ),
           Text(

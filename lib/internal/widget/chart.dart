@@ -102,7 +102,7 @@ class _LineChartCustomState extends State<LineChartCustom> {
         bottomTitles: SideTitles(
           showTitles: true,
           reservedSize: widget.maxValue,
-          getTextStyles: (value) =>
+          getTextStyles: (_,value) =>
           const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
           getTitles: (value) {
             if((value.toInt() % widget.cap) == 0)
@@ -114,7 +114,7 @@ class _LineChartCustomState extends State<LineChartCustom> {
         ),
         leftTitles: SideTitles(
           showTitles: true,
-          getTextStyles: (value) => const TextStyle(
+          getTextStyles: (_,value) => const TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
             fontSize: 10,

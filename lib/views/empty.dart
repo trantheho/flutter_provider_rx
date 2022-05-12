@@ -1,10 +1,27 @@
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_provider_rx/generated/l10n.dart';
 import 'package:flutter_provider_rx/internal/utils/styles.dart';
 import 'package:flutter_provider_rx/internal/widget/divider_dotted_line.dart';
 
-class EmptyScreen extends StatelessWidget {
+class EmptyScreen extends StatefulWidget {
+  const EmptyScreen({Key key}) : super(key: key);
+
+  @override
+  State<EmptyScreen> createState() => _EmptyScreenState();
+}
+
+class _EmptyScreenState extends State<EmptyScreen> {
+
+
+  @override
+  void initState() {
+    super.initState();
+    if(mounted){
+      print('empty');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

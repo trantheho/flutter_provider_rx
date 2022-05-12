@@ -1,11 +1,30 @@
+
 import 'package:flutter/foundation.dart';
+import 'package:flutter_provider_rx/commands/authenticate_command/check_login_command.dart';
 
-class AuthProvider extends ChangeNotifier{
+class AuthProvider extends ChangeNotifier {
 
-  DateTime _expiry = DateTime.fromMillisecondsSinceEpoch(0);
+  AuthProvider(){
+    checkLoginStatus();
+  }
 
-  bool get isExpired => expiry.isBefore(DateTime.now());
+  bool _loading = true;
 
-  DateTime get expiry => _expiry;
+  bool get loading => _loading;
 
+  bool _isLoggedIn = false;
+
+  bool get isLoggedIn => _isLoggedIn;
+
+  void updateLoggedIn(value){
+    _isLoggedIn = value;
+    notifyListeners();
+  }
+
+  Future<void> checkLoginStatus() async {
+    final _result = await CheckLoginCommand().run();
+    _loading = false;
+    _isLoggedIn = _result;
+    notifyListeners();
+  }
 }

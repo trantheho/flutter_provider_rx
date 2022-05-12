@@ -1,0 +1,8 @@
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  strong-mode:
+    implicit-dynamic: true
+    implicit-casts: true
+  exclude:
+  - lib/generated/*

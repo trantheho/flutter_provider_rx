@@ -5,7 +5,7 @@ class PasswordInput extends StatelessWidget {
   final Function(String) onTextChanged;
   final LoginController loginController;
 
-  PasswordInput({this.onTextChanged, this.loginController});
+  const PasswordInput({Key key, this.onTextChanged, this.loginController}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,16 +15,16 @@ class PasswordInput extends StatelessWidget {
       builder: (context, snapshot) {
         return TextField(
           keyboardType: TextInputType.number,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 14,
             color: Colors.black,
           ),
           textInputAction: TextInputAction.next,
           decoration: InputDecoration(
             alignLabelWithHint: true,
-            suffixIcon: Icon(Icons.visibility_off_outlined),
+            suffixIcon: const Icon(Icons.visibility_off_outlined),
             //suffix: Icon(Icons.visibility_off_outlined),
-            labelStyle: TextStyle(
+            labelStyle: const TextStyle(
               fontSize: 16,
               color: Colors.blueGrey,
               fontWeight: FontWeight.w600,
@@ -46,7 +46,7 @@ class PasswordInput extends StatelessWidget {
                 ),
             ),
             //errorText: snapshot.data,
-            hintStyle: TextStyle(
+            hintStyle: const TextStyle(
               fontSize: 14,
               color: Colors.grey,
             ),

@@ -1,22 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_provider_rx/internal/router/app_router.dart';
 import 'package:flutter_provider_rx/internal/utils/app_routes.dart';
 import 'package:flutter_provider_rx/internal/widget/dialog.dart';
+import 'package:flutter_provider_rx/provider/auth_provider.dart';
 import 'package:flutter_provider_rx/services/local/hive_storage.dart';
-
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'base_provider.dart';
 
-class AppController extends BaseProvider {
-  LoadingProvider get loading => getProvided();
+class AppController {
+  final LoadingProvider _loading;
+  final LocaleProvider _locale;
+  final AppRouter _router;
+  final DialogController _dialog;
+  final HiveStorage _storage;
+  final Toast _toast;
 
-  LocaleProvider get locale => getProvided();
+  AppController() :
+    _loading = mainContext.read<LoadingProvider>(),
+    _locale = mainContext.read<LocaleProvider>(),
+    _router = AppRouter(mainContext.read<AuthProvider>()),
+    _dialog = DialogController(),
+    _storage = HiveStorage.instance,
+    _toast = Toast();
 
-  DialogController get dialog => DialogController();
 
-  HiveStorage get storage => HiveStorage.instance;
+  DialogController get dialog => _dialog;
 
-  AppRoutes get routes => AppRoutes();
+  HiveStorage get storage => _storage;
 
-  Toast get toast => Toast();
+  Toast get toast => _toast;
+
+  LoadingProvider get loading => _loading;
+
+  LocaleProvider get locale => _locale;
+
+  AppRouter get router => _router;
 
   bool alertTimeout = false;
 

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_provider_rx/internal/router/route_utils.dart';
 import 'package:flutter_provider_rx/internal/utils/styles.dart';
+import 'package:flutter_provider_rx/main.dart';
 import 'package:flutter_provider_rx/models/book_model.dart';
+import 'package:flutter_provider_rx/provider/home_provider.dart';
 import 'package:flutter_provider_rx/provider/main_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -8,6 +11,9 @@ import 'tab/popular_tab.dart';
 import 'widget_build/item_book.dart';
 
 class HomeScreen extends StatefulWidget {
+  final String kind;
+  const HomeScreen({Key key, this.kind}) : super(key: key);
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -18,17 +24,19 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
 
   final List<Book> listBook = [
     Book(
-      image: "https://img.vncdn.xyz/storage20/hh247/images/vu-canh-ky-2-f2689.jpg",
+      image: "https://photos.animetvn.tv/upload/film/006T5GTEly1ggmu3oerihj30u01hc7wi.png",
       name: "Tây Du",
       subName: "The Ton Ngo Khong",
+      id: '0',
     ),
     Book(
-      image: "https://img.vncdn.xyz/storage20/hh247/images/vu-canh-ky-2-f2689.jpg",
+      image: "https://photos.animetvn.tv/upload/film/006T5GTEly1ggmu3oerihj30u01hc7wi.png",
       name: "Vũ Canh Kỷ",
       subName: "The Vu Canh",
+      id: '1',
     ),
     Book(
-      image: "https://img.tvzingvn.net/uploads/2020/07/5f0a3c90acc3999-35268.jpg",
+      image: "https://photos.animetvn.tv/upload/film/006T5GTEly1ggmu3oerihj30u01hc7wi.png",
       name: "Nguyên Long",
       subName: "The Thor",
     ),
@@ -42,11 +50,37 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
   @override
   void initState() {
     super.initState();
+    if(mounted){
+      print('home');
+    }
     tabController = TabController(length: 3, vsync: this);
     tabController.index = 0;
     pageController = PageController(initialPage: 0, keepPage: true, viewportFraction: 1);
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    switch (widget.kind) {
+      case 'popular':
+        tabController.index = 0;
+        break;
+
+      case 'new':
+        tabController.index = 1;
+        break;
+
+      case 'best':
+        tabController.index = 2;
+        break;
+    }
+  }
+
+  @override
+  void dispose() {
+    tabController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,23 +95,22 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
               children: [
                 _buildUserInfo(),
 
-                SizedBox(height: 20,),
+                const SizedBox(height: 20,),
 
                 Text(
                   "Recomended",
                   style: AppTextStyle.bold.copyWith(fontSize: 25),
                 ),
 
-                SizedBox(height: 20,),
+                const SizedBox(height: 20,),
 
                 _buildListBook(),
 
-                SizedBox(height: 20,),
+                const SizedBox(height: 20,),
 
                 _buildTapBar(),
 
                 _buildTabBarView(),
-
               ],
             ),
           ),
@@ -94,7 +127,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
           Container(
             width: 50,
             height: 50,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               shape: BoxShape.circle,
             ),
             child: ClipRRect(
@@ -106,7 +139,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
             ),
           ),
 
-          SizedBox(width: 10,),
+          const SizedBox(width: 10,),
 
           Expanded(
             child: Text(
@@ -115,13 +148,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
             ),
           ),
 
-          IconButton(
+          const IconButton(
             icon: Icon(Icons.search_outlined, size: 24, color: Colors.black,),
             onPressed: null,
             padding: EdgeInsets.zero,
           ),
 
-          IconButton(
+          const IconButton(
             padding: EdgeInsets.zero,
             icon: Icon(Icons.bookmark_border_outlined, size: 24, color: Colors.black,),
             onPressed: null,
@@ -151,16 +184,16 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
   Widget _buildTapBar(){
     return Container(
       height: 50,
-      margin: EdgeInsets.only(right: 20,),
+      margin: const EdgeInsets.only(right: 20,),
       color: Colors.white,
       child: TabBar(
         controller: tabController,
         labelColor: Colors.blue,
         labelStyle: AppTextStyle.medium,
         unselectedLabelColor: Colors.grey,
-        //indicatorColor: Colors.transparent,
-        indicatorPadding: EdgeInsets.only(right: 8),
-        tabs: [
+        indicatorPadding: const EdgeInsets.only(right: 8),
+        onTap: _handleTabTapped,
+        tabs: const [
           Tab(
             child: Align(
               alignment: Alignment.center,
@@ -194,14 +227,31 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
     return Expanded(
       child: TabBarView(
         controller: tabController,
-          children: [
-            PopularTab(),
-            PopularTab(),
-            PopularTab(),
+          children: const [
+            PopularTab(kind: 'popular',),
+            PopularTab(kind: 'new'),
+            PopularTab(kind: 'best-review',),
           ]
       ),
     );
   }
 
+  void _handleTabTapped(int index){
+    switch (index) {
+      case 1:
+        appController.router.of(context).go(AppPage.home.path.replaceAll(':${AppPage.home.param}', 'new'));
+        context.read<MainProvider>().homeData.updateTabName = 'new';
+        break;
+      case 2:
+        appController.router.of(context).go(AppPage.home.path.replaceAll(':${AppPage.home.param}', 'best'));
+        context.read<MainProvider>().homeData.updateTabName = 'best';
+        break;
+      case 0:
+      default:
+      appController.router.of(context).go(AppPage.home.path.replaceAll(':${AppPage.home.param}', 'popular'));
+      context.read<MainProvider>().homeData.updateTabName = 'popular';
+        break;
+    }
+  }
 
 }

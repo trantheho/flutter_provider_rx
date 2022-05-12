@@ -12,10 +12,11 @@ class BookProvider extends ChangeNotifier{
   }
 
   void updateFavorite(String id, bool value){
-    listPopular.forEach((element) {
-      if(element.id == id)
+    for (var element in listPopular) {
+      if(element.id == id) {
         element.bookmark = value;
-    });
+      }
+    }
     notifyListeners();
   }
 

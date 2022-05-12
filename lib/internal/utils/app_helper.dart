@@ -25,10 +25,11 @@ class AppHelper {
   /// set status bar style overlay ui
   static SystemUiOverlayStyle statusBarOverlayUI(Brightness androidBrightness) {
     SystemUiOverlayStyle statusBarStyle;
-    if (Platform.isIOS)
+    if (Platform.isIOS) {
       statusBarStyle = (androidBrightness == Brightness.light)
           ? SystemUiOverlayStyle.light
           : SystemUiOverlayStyle.dark;
+    }
     if (Platform.isAndroid) {
       statusBarStyle = SystemUiOverlayStyle(
           statusBarColor: Colors.transparent,

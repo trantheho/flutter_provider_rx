@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_provider_rx/internal/utils/app_helper.dart';
+import 'package:flutter_provider_rx/internal/utils/styles.dart';
 import 'package:flutter_provider_rx/internal/widget/button.dart';
 import 'package:flutter_provider_rx/internal/widget/loading.dart';
 import 'package:flutter_provider_rx/main.dart';
@@ -9,6 +10,8 @@ import 'widget_build/password_input.dart';
 import 'widget_build/phone_number_input.dart';
 
 class LoginScreen extends StatefulWidget {
+  const LoginScreen({Key key}) : super(key: key);
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -47,7 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         },
                       ),
 
-                      SizedBox(height: 30,),
+                      const SizedBox(height: 30,),
 
                       PasswordInput(
                         loginController: loginController,
@@ -61,15 +64,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: ButtonWithHighlightText(
                           padding: EdgeInsets.zero,
                           text: "Forgot Password?",
-                          textStyle: TextStyle(
-                            fontSize: 14,
-                            color: Colors.blueAccent,
-                          ),
+                          textStyle: AppTextStyle.normal.copyWith(color: Colors.blueAccent),
                           function: null,
                         ),
                       ),
 
-                      Spacer(),
+                      const Spacer(),
 
                       AppButton(
                         buttonText: "Login",
@@ -78,11 +78,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         },
                       ),
 
-                      SizedBox(height: 10,),
+                      const SizedBox(height: 10,),
 
                       _buildNewUser(),
 
-                      SizedBox(height: 30,),
+                      const SizedBox(height: 30,),
 
                     ],
                   ),
@@ -92,7 +92,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 stream: loginController.screenLoading.stream,
                 initialData: false,
                 builder: (context, snapshot) {
-                  return snapshot.data ? AppLoading() : SizedBox();
+                  return snapshot.data ? const AppLoading() : const SizedBox();
                 },
               ),
             ],
@@ -106,7 +106,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(
+        const Text(
           "New user ?",
           style: TextStyle(
             fontSize: 14,
@@ -114,15 +114,12 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
 
-        SizedBox(width: 10,),
+        const SizedBox(width: 10,),
 
         ButtonWithHighlightText(
           padding: EdgeInsets.zero,
             text: "Sign up",
-            textStyle: TextStyle(
-              fontSize: 14,
-              color: Colors.blue,
-            ),
+            textStyle: AppTextStyle.normal,
             function: null,
         ),
 

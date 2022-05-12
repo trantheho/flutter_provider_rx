@@ -1,11 +1,15 @@
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter_provider_rx/commands/base_command.dart';
 import 'package:flutter_provider_rx/models/user_model.dart';
+import 'package:flutter_provider_rx/provider/home_provider.dart';
 
 class MainProvider extends ChangeNotifier {
-  List<String> _userPosts = [];
-  List<String> get userPosts => _userPosts;
+  final List<String> _userPosts = [];
+  final homeData = HomeProvider.init();
 
+
+  List<String> get userPosts => _userPosts;
 
   User _currentUser;
   User get currentUser => _currentUser;
@@ -17,11 +21,11 @@ class MainProvider extends ChangeNotifier {
 
   Future<User> getCurrentUser() async {
     User user;
-
-    await Future.delayed(Duration(seconds: 1));
+    await Future.delayed(const Duration(seconds: 1));
 
     return user;
-
   }
 }
+
+
 

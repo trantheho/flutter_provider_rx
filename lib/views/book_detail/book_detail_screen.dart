@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_provider_rx/internal/utils/styles.dart';
 import 'package:flutter_provider_rx/models/book_model.dart';
 import 'package:flutter_provider_rx/provider/book_provider.dart';
+import 'package:flutter_provider_rx/provider/main_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 
 class BookDetailScreen extends StatefulWidget {
   final Book book;
 
-  BookDetailScreen({this.book});
+  const BookDetailScreen({Key key, this.book}) : super(key: key);
 
   @override
   _BookDetailScreenState createState() => _BookDetailScreenState();
@@ -20,13 +21,13 @@ class _BookDetailScreenState extends State<BookDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final _bookProvider = context.read<BookProvider>();
+    final _bookProvider = context.read<MainProvider>();
     return Scaffold(
       backgroundColor: Colors.blueGrey,
       appBar: AppBar(
         backgroundColor: Colors.blueGrey,
         leading: IconButton(
-            icon: Icon(
+            icon: const Icon(
               Icons.arrow_back,
               color: Colors.black,
             ),
@@ -36,7 +37,7 @@ class _BookDetailScreenState extends State<BookDetailScreen> {
         bottom: false,
         child: Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Container(
@@ -50,7 +51,7 @@ class _BookDetailScreenState extends State<BookDetailScreen> {
                 borderRadius: BorderRadius.circular(12),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             _buildContent(_bookProvider),
@@ -60,17 +61,17 @@ class _BookDetailScreenState extends State<BookDetailScreen> {
     );
   }
 
-  Widget _buildContent(BookProvider bookProvider) {
+  Widget _buildContent(MainProvider bookProvider) {
     return Expanded(
       child: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(25),
             topRight: Radius.circular(25),
           ),
           color: Colors.white,
         ),
-        padding: EdgeInsets.only(left: 20, right: 20, top: 20),
+        padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -95,17 +96,17 @@ class _BookDetailScreenState extends State<BookDetailScreen> {
                 BookMarkButton(
                   initBookMark: book.bookmark,
                   onTap: (value) =>
-                      bookProvider.updateFavorite(widget.book.id, value),
+                      bookProvider.homeData.updateFavorite(widget.book.id, value),
                 ),
               ],
             ),
             Row(
               children: [
-                Icon(
+                const Icon(
                   Icons.star,
                   color: Colors.yellow,
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 10,
                 ),
                 Text(
@@ -113,7 +114,7 @@ class _BookDetailScreenState extends State<BookDetailScreen> {
                   style: AppTextStyle.normal,
                 ),
               ],
-            )
+            ),
           ],
         ),
       ),
@@ -125,7 +126,7 @@ class BookMarkButton extends StatefulWidget {
   final bool initBookMark;
   final Function(bool) onTap;
 
-  BookMarkButton({Key key, this.onTap, this.initBookMark}) : super(key: key);
+  const BookMarkButton({Key key, this.onTap, this.initBookMark}) : super(key: key);
 
   @override
   _BookMarkButtonState createState() => _BookMarkButtonState();
@@ -152,7 +153,7 @@ class _BookMarkButtonState extends State<BookMarkButton> {
       child: Container(
         width: 50,
         height: 50,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           shape: BoxShape.circle,
           color: Colors.blue,
         ),

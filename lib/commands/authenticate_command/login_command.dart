@@ -13,7 +13,7 @@ class LoginCommand extends BaseCommand {
       password: password,
     );*/
 
-    await Future.delayed(Duration(seconds: 1));
+    await Future.delayed(const Duration(seconds: 1));
 
     _user = User(name: "Chicken", age: "2", phone: "00000000");
 

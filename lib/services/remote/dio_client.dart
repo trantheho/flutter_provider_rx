@@ -61,7 +61,7 @@ class DioClient{
     return _header;
   }
 
-  Future<Response<dynamic>> dioWrapper(Future<Response> Function() apiCall) async {
+  Future<Response<dynamic>> dioCall(Future<Response> Function() apiCall) async {
     try {
       return await apiCall();
     } catch (error) {

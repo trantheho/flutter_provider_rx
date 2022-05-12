@@ -5,7 +5,7 @@ class AppRoutes {
 
   /// Navigate push with callback
   void push(context, String screenName, Widget screen, [Function(Object) callback]) {
-    if (context == null) return null;
+    if (context == null) return;
     Navigator.push(context,
         CupertinoPageRoute(builder: (context) =>
         screen,

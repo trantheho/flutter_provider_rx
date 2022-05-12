@@ -7,33 +7,33 @@ import 'package:flutter_provider_rx/my_app.dart';
 class DialogController{
   DialogController();
 
-  final _context = AppGlobals.currentState.overlay.context;
+  //final _context = AppGlobals.currentState.overlay.context;
 
   /// network dialog
-  void showNetworkDialog(String title, String message) {
-    if (_context == null) return;
+  void showNetworkDialog({BuildContext context, String title, String message}) {
+    if (context == null) return;
     showDialog(
-      context: _context,
+      context: context,
       barrierDismissible: false,
       builder: (context) => AppAlertDialog(title: title,message: message),
     );
   }
 
   /// normal dialog
-  void showDefaultDialog({String title, String message}) {
-    if (_context == null) return;
+  void showDefaultDialog({BuildContext context, String title, String message}) {
+    if (context == null) return;
     showDialog(
-      context: _context,
+      context: context,
       barrierDismissible: false,
       builder: (BuildContext context) => AppAlertDialog(title: title,message: message),
     );
   }
 
   /// confirm dialog
-  void showConfirmDialog({String title, String message, Function buttonOKCallback}) {
-    if (_context == null) return;
+  void showConfirmDialog({BuildContext context, String title, String message, Function buttonOKCallback}) {
+    if (context == null) return;
     showDialog(
-      context: _context,
+      context: context,
       barrierDismissible: false,
       builder: (BuildContext context) => ConfirmAlertDialog(
         title: title,
@@ -45,8 +45,8 @@ class DialogController{
 }
 
 class AppAlertDialog extends StatelessWidget {
-  final title;
-  final message;
+  final String title;
+  final String message;
 
   const AppAlertDialog({Key key, this.title = "Alert", this.message})
       : super(key: key);
@@ -54,7 +54,7 @@ class AppAlertDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoAlertDialog(
-      title: Text(title),
+      title: Text(title ?? 'Alert'),
       content: Text(message),
       actions: <Widget>[
         TextButton(
@@ -68,9 +68,9 @@ class AppAlertDialog extends StatelessWidget {
 }
 
 class ConfirmAlertDialog extends StatelessWidget {
-  final title;
-  final message;
-  final onOkPress;
+  final String title;
+  final String message;
+  final Function onOkPress;
 
   const ConfirmAlertDialog({
     Key key,
