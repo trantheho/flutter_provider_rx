@@ -1,7 +1,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_provider_rx/internal/globals.dart';
+import 'package:flutter_provider_rx/internal/utils/globals.dart';
 import 'package:flutter_provider_rx/my_app.dart';
 
 class DialogController{

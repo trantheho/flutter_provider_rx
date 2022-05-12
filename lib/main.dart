@@ -1,7 +1,7 @@
 import 'package:flutter_provider_rx/my_app.dart';
 import 'package:get_it/get_it.dart';
 
-import 'internal/base/app_controller.dart';
+import 'internal/app_controller.dart';
 
 void main() async {
   registerSingletons();

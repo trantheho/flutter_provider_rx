@@ -29,7 +29,6 @@ dependencies:
   fl_chart: ^0.36.1
   get_it: ^7.2.0 # DI
   go_router: ^3.0.7
-  purchases_flutter: ^3.9.5
 
 dev_dependencies:
   flutter_test:

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_provider_rx/internal/router/route_utils.dart';
+import 'package:flutter_provider_rx/internal/utils/app_helper.dart';
 import 'package:flutter_provider_rx/internal/utils/styles.dart';
 import 'package:flutter_provider_rx/main.dart';
 import 'package:flutter_provider_rx/models/book_model.dart';
@@ -84,37 +85,40 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: SafeArea(
-          bottom: false,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 20),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildUserInfo(),
+    return AnnotatedRegion(
+      value: AppHelper.statusBarOverlayUI(Brightness.dark),
+      child: Scaffold(
+          body: SafeArea(
+            bottom: false,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 20),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildUserInfo(),
 
-                const SizedBox(height: 20,),
+                  const SizedBox(height: 20,),
 
-                Text(
-                  "Recomended",
-                  style: AppTextStyle.bold.copyWith(fontSize: 25),
-                ),
+                  Text(
+                    "Recomended",
+                    style: AppTextStyle.bold.copyWith(fontSize: 25),
+                  ),
 
-                const SizedBox(height: 20,),
+                  const SizedBox(height: 20,),
 
-                _buildListBook(),
+                  _buildListBook(),
 
-                const SizedBox(height: 20,),
+                  const SizedBox(height: 20,),
 
-                _buildTapBar(),
+                  _buildTapBar(),
 
-                _buildTabBarView(),
-              ],
+                  _buildTabBarView(),
+                ],
+              ),
             ),
-          ),
-        )
+          )
+      ),
     );
   }
 

@@ -9,7 +9,6 @@ enum AppPage{
   profile,
   login,
   register,
-  main,
   book,
 }
 
@@ -26,8 +25,6 @@ extension AppPageExtension on AppPage{
         return "/register";
       case AppPage.login:
         return "/login";
-      case AppPage.main:
-        return "/home";
       case AppPage.home:
         return "/home/:kind";
       case AppPage.book:
@@ -66,8 +63,6 @@ extension AppPageExtension on AppPage{
         return "login";
       case AppPage.register:
         return "register";
-      case AppPage.main:
-        return "main";
       case AppPage.root:
         return "root";
       case AppPage.book:

@@ -38,23 +38,29 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
       onWillPop: () => null,
       child: Scaffold(
         backgroundColor: AppColors.terraCotta,
-        bottomNavigationBar: NavigationBar(
-          destinations: const [
-            Destination(tab: MainTab.home),
-            Destination(tab: MainTab.store),
-            Destination(tab: MainTab.bag),
-            Destination(tab: MainTab.profile),
-          ],
-          selectedIndex: widget.tab.index,
-          onDestinationSelected: _tapBottomBar,
-        ),
-        body: LazyIndexedStack(
-          index: widget.index,
+        body: Column(
           children: [
-            HomeScreen(kind: Provider.of<MainProvider>(context, listen: false).homeData.currentTabName),
-            const EmptyScreen(),
-            const EmptyScreen(),
-            const ProfileScreen(),
+            Expanded(
+              child: LazyIndexedStack(
+                index: widget.index,
+                children: [
+                  HomeScreen(kind: Provider.of<MainProvider>(context, listen: false).homeData.currentTabName),
+                  const EmptyScreen(),
+                  const EmptyScreen(),
+                  const ProfileScreen(),
+                ],
+              ),
+            ),
+            NavigationBar(
+              destinations: const [
+                Destination(tab: MainTab.home),
+                Destination(tab: MainTab.store),
+                Destination(tab: MainTab.bag),
+                Destination(tab: MainTab.profile),
+              ],
+              selectedIndex: widget.tab.index,
+              onDestinationSelected: _tapBottomBar,
+            )
           ],
         ),
       ),

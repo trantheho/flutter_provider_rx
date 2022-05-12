@@ -6,7 +6,7 @@ import 'package:flutter_provider_rx/provider/auth_provider.dart';
 import 'package:flutter_provider_rx/services/local/hive_storage.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'base_provider.dart';
+import 'base/base_provider.dart';
 
 class AppController {
   final LoadingProvider _loading;
@@ -43,13 +43,14 @@ class AppController {
 }
 
 class Toast {
-  void showToast({@required BuildContext context, String content = '', TextStyle contentStyle}) {
+  void showToast({@required BuildContext context, String message = '', TextStyle textStyle}) {
     final scaffold = ScaffoldMessenger.of(context);
     scaffold.showSnackBar(
       SnackBar(
+        behavior: SnackBarBehavior.floating,
         content: Text(
-          content,
-          style: contentStyle,
+          message,
+          style: textStyle ?? const TextStyle(fontSize: 16, color: Colors.white),
         ),
       ),
     );
