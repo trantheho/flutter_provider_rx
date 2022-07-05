@@ -7,8 +7,6 @@ import 'package:flutter_provider_rx/my_app.dart';
 class DialogController{
   DialogController();
 
-  //final _context = AppGlobals.currentState.overlay.context;
-
   /// network dialog
   void showNetworkDialog({BuildContext context, String title, String message}) {
     if (context == null) return;
@@ -61,7 +59,7 @@ class AppAlertDialog extends StatelessWidget {
             onPressed: (){
               Navigator.of(context).pop();
             },
-            child: Text("OK")),
+            child: const Text("OK")),
       ],
     );
   }
@@ -90,14 +88,14 @@ class ConfirmAlertDialog extends StatelessWidget {
           onPressed: () {
             Navigator.pop(context);
           },
-          child: Text('CANCEL'),
+          child: const Text('CANCEL'),
         ),
         TextButton(
           onPressed: () {
             onOkPress();
             Navigator.pop(context);
           },
-          child: Text('OK'),
+          child: const Text('OK'),
         ),
       ],
     );

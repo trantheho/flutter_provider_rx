@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_provider_rx/di/app_di.dart';
 import 'package:flutter_provider_rx/internal/utils/app_helper.dart';
 import 'package:flutter_provider_rx/internal/utils/styles.dart';
 import 'package:flutter_provider_rx/internal/widget/button.dart';
 import 'package:flutter_provider_rx/internal/widget/loading.dart';
-import 'package:flutter_provider_rx/main.dart';
 
 import 'login_controller.dart';
 import 'widget_build/password_input.dart';
@@ -27,6 +27,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    loginController.context = context;
     return AnnotatedRegion(
       value: AppHelper.statusBarOverlayUI(Brightness.dark),
       child: GestureDetector(
@@ -41,7 +42,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Spacer(),
+                      const Spacer(),
 
                       PhoneNumberInput(
                         loginController: loginController,
@@ -74,7 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       AppButton(
                         buttonText: "Login",
                         onPressed: (){
-                          loginController.login(context, "email", "password");
+                          loginController.login(phoneNumber: loginController.phoneNumber, password: loginController.password);
                         },
                       ),
 

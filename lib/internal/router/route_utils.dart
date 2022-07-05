@@ -10,6 +10,7 @@ enum AppPage{
   login,
   register,
   book,
+  book2,
 }
 
 extension AppPageExtension on AppPage{
@@ -26,7 +27,7 @@ extension AppPageExtension on AppPage{
       case AppPage.login:
         return "/login";
       case AppPage.home:
-        return "/home/:kind";
+        return "/home";
       case AppPage.book:
         return "book/:bookId";
       case AppPage.store:
@@ -35,6 +36,8 @@ extension AppPageExtension on AppPage{
         return "/bag";
       case AppPage.profile:
         return "/profile";
+      case AppPage.book2:
+        return "new/:book2Id";
       default:
         return "/";
     }
@@ -42,12 +45,12 @@ extension AppPageExtension on AppPage{
 
   String get param{
     switch(this){
-      case AppPage.home:
-        return "kind";
       case AppPage.book:
         return "bookId";
+      case AppPage.book2:
+        return "book2Id";
       default:
-        return "kind";
+        return "";
     }
   }
 
@@ -67,6 +70,8 @@ extension AppPageExtension on AppPage{
         return "root";
       case AppPage.book:
         return "book";
+      case AppPage.book2:
+        return "new";
       case AppPage.store:
         return "store";
       case AppPage.bag:

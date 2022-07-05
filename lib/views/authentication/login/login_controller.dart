@@ -1,13 +1,13 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_provider_rx/commands/authenticate_command/login_command.dart';
-import 'package:flutter_provider_rx/main.dart';
+import 'package:flutter_provider_rx/di/app_di.dart';
+import 'package:flutter_provider_rx/internal/base/base_provider.dart';
+import 'package:flutter_provider_rx/internal/utils/app_validation.dart';
 import 'package:flutter_provider_rx/models/book_model.dart';
 import 'package:flutter_provider_rx/models/user_model.dart';
 import 'package:flutter_provider_rx/provider/auth_provider.dart';
-import 'package:flutter_provider_rx/provider/book_provider.dart';
 import 'package:flutter_provider_rx/provider/main_provider.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -15,9 +15,12 @@ class LoginController {
   final screenLoading = BehaviorSubject<bool>(); //#local screen loading
   final phoneWarning = BehaviorSubject<String>();
   final passwordWarning = BehaviorSubject<String>();
+  BuildContext context;
 
   String phoneNumber = '';
   String password = '';
+  ValidationState phoneNumberState;
+  ValidationState passwordState;
 
   List<Book> list = [
     Book(
@@ -49,8 +52,9 @@ class LoginController {
     passwordWarning.close();
   }
 
-  Future<void> login(BuildContext context, String phoneNumber, String password) async {
-    if (validInput()) {
+  Future<void> login({String phoneNumber, String password}) async {
+    final _valid = validInput(phoneNumber: phoneNumber, password: password);
+    if (_valid) {
       try {
         appController.loading.show();
         User user = await LoginCommand().run(
@@ -58,13 +62,7 @@ class LoginController {
           password: password,
         );
 
-        if (user != null) {
-          context.read<MainProvider>().homeData.updatePopular = list;
-          context.read<AuthProvider>().updateLoggedIn(true);
-        }
-        if (user == null) {
-          appController.dialog.showDefaultDialog(title: "Alert", message: "User is null");
-        }
+        _handleUserResult(user);
         appController.loading.hide();
       } catch (error) {
         appController.loading.hide();
@@ -73,17 +71,37 @@ class LoginController {
     }
   }
 
-  bool validInput() {
-    bool value = true;
-    if (phoneNumber.isEmpty) {
-      phoneWarning.add("Phone number can not empty.");
-      value = false;
+  void _handleUserResult(User user) {
+    if (user == null) {
+      appController.dialog.showDefaultDialog(context: context, title: "Alert", message: "User is null");
+    }
+    else{
+      mainContext.read<MainProvider>().homeData.updatePopular = list;
+      mainContext.read<AuthProvider>().updateLoggedIn(true);
+    }
+  }
+
+  bool validInput({String phoneNumber, String password}) {
+    phoneNumberState = Validation.instance.validatePhoneNumber(phoneNumber);
+    passwordState = Validation.instance.validatePassword(password);
+
+    _handleInvalidState(phoneNumber, password);
+
+    //return phoneNumberState == ValidationState.valid && passwordState == ValidationState.valid;
+    return true;
+  }
+
+  void _handleInvalidState(String phoneNumber, String password) {
+    if(phoneNumberState == ValidationState.badPhoneNumber){
+      if (phoneNumber.isEmpty) {
+        phoneWarning.add("Phone number can not empty.");
+      }
     }
 
-    if (password.isEmpty) {
-      passwordWarning.add("Password can not empty.");
-      value = false;
+    if(passwordState == ValidationState.badPassword){
+      if (password.isEmpty) {
+        passwordWarning.add("Password can not empty.");
+      }
     }
-    return value;
   }
 }

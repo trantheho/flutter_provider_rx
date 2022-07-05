@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_provider_rx/internal/app_controller.dart';
 import 'package:flutter_provider_rx/internal/router/route_utils.dart';
 import 'package:flutter_provider_rx/internal/utils/app_helper.dart';
 import 'package:flutter_provider_rx/internal/utils/styles.dart';
-import 'package:flutter_provider_rx/main.dart';
 import 'package:flutter_provider_rx/models/book_model.dart';
-import 'package:flutter_provider_rx/provider/home_provider.dart';
 import 'package:flutter_provider_rx/provider/main_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -12,14 +11,14 @@ import 'tab/popular_tab.dart';
 import 'widget_build/item_book.dart';
 
 class HomeScreen extends StatefulWidget {
-  final String kind;
-  const HomeScreen({Key key, this.kind}) : super(key: key);
+  //final String kind;
+  const HomeScreen({Key key}) : super(key: key);
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
+class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   TabController tabController;
   PageController pageController;
 
@@ -51,15 +50,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
   @override
   void initState() {
     super.initState();
-    if(mounted){
-      print('home');
-    }
     tabController = TabController(length: 3, vsync: this);
     tabController.index = 0;
     pageController = PageController(initialPage: 0, keepPage: true, viewportFraction: 1);
   }
 
-  @override
+  /*@override
   void didChangeDependencies() {
     super.didChangeDependencies();
     switch (widget.kind) {
@@ -75,7 +71,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
         tabController.index = 2;
         break;
     }
-  }
+  }*/
 
   @override
   void dispose() {
@@ -89,41 +85,38 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
       value: AppHelper.statusBarOverlayUI(Brightness.dark),
       child: Scaffold(
           body: SafeArea(
-            bottom: false,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 20),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildUserInfo(),
-
-                  const SizedBox(height: 20,),
-
-                  Text(
-                    "Recomended",
-                    style: AppTextStyle.bold.copyWith(fontSize: 25),
-                  ),
-
-                  const SizedBox(height: 20,),
-
-                  _buildListBook(),
-
-                  const SizedBox(height: 20,),
-
-                  _buildTapBar(),
-
-                  _buildTabBarView(),
-                ],
+        bottom: false,
+        child: Padding(
+          padding: const EdgeInsets.only(left: 20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildUserInfo(),
+              const SizedBox(
+                height: 20,
               ),
-            ),
-          )
-      ),
+              Text(
+                "Recomended",
+                style: AppTextStyle.bold.copyWith(fontSize: 25),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              _buildListBook(),
+              const SizedBox(
+                height: 20,
+              ),
+              _buildTapBar(),
+              _buildTabBarView(),
+            ],
+          ),
+        ),
+      )),
     );
   }
 
-
-  Widget _buildUserInfo(){
+  Widget _buildUserInfo() {
     return Padding(
       padding: const EdgeInsets.only(right: 20, top: 20),
       child: Row(
@@ -142,34 +135,39 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
               ),
             ),
           ),
-
-          const SizedBox(width: 10,),
-
+          const SizedBox(
+            width: 10,
+          ),
           Expanded(
             child: Text(
-              "Hi ${context.watch<MainProvider>().currentUser.name}!",
+              "Hi ${context.watch<MainProvider>().currentUser?.name ?? ""}!",
               style: AppTextStyle.normal,
             ),
           ),
-
           const IconButton(
-            icon: Icon(Icons.search_outlined, size: 24, color: Colors.black,),
+            icon: Icon(
+              Icons.search_outlined,
+              size: 24,
+              color: Colors.black,
+            ),
             onPressed: null,
             padding: EdgeInsets.zero,
           ),
-
           const IconButton(
             padding: EdgeInsets.zero,
-            icon: Icon(Icons.bookmark_border_outlined, size: 24, color: Colors.black,),
+            icon: Icon(
+              Icons.bookmark_border_outlined,
+              size: 24,
+              color: Colors.black,
+            ),
             onPressed: null,
           ),
         ],
       ),
     );
-
   }
 
-  Widget _buildListBook(){
+  Widget _buildListBook() {
     return SizedBox(
       height: 250,
       child: ListView.builder(
@@ -185,10 +183,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
     );
   }
 
-  Widget _buildTapBar(){
+  Widget _buildTapBar() {
     return Container(
       height: 50,
-      margin: const EdgeInsets.only(right: 20,),
+      margin: const EdgeInsets.only(
+        right: 20,
+      ),
       color: Colors.white,
       child: TabBar(
         controller: tabController,
@@ -227,35 +227,32 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
     );
   }
 
-  Widget _buildTabBarView(){
+  Widget _buildTabBarView() {
     return Expanded(
       child: TabBarView(
         controller: tabController,
-          children: const [
-            PopularTab(kind: 'popular',),
-            PopularTab(kind: 'new'),
-            PopularTab(kind: 'best-review',),
-          ]
+        physics: const NeverScrollableScrollPhysics(),
+        children: const [
+          PopularTab(kind: 'popular',),
+          PopularTab(kind: 'new'),
+          PopularTab(kind: 'best-review',),
+        ],
       ),
     );
   }
 
-  void _handleTabTapped(int index){
+  void _handleTabTapped(int index) {
     switch (index) {
       case 1:
-        appController.router.of(context).go(AppPage.home.path.replaceAll(':${AppPage.home.param}', 'new'));
-        context.read<MainProvider>().homeData.updateTabName = 'new';
+        tabController.animateTo(1);
         break;
       case 2:
-        appController.router.of(context).go(AppPage.home.path.replaceAll(':${AppPage.home.param}', 'best'));
-        context.read<MainProvider>().homeData.updateTabName = 'best';
+        tabController.animateTo(2);
         break;
       case 0:
       default:
-      appController.router.of(context).go(AppPage.home.path.replaceAll(':${AppPage.home.param}', 'popular'));
-      context.read<MainProvider>().homeData.updateTabName = 'popular';
+        tabController.animateTo(0);
         break;
     }
   }
-
 }

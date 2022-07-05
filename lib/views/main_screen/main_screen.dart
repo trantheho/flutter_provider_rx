@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_provider_rx/di/app_di.dart';
 import 'package:flutter_provider_rx/generated/l10n.dart';
 import 'package:flutter_provider_rx/internal/router/route_utils.dart';
 import 'package:flutter_provider_rx/internal/utils/styles.dart';
 import 'package:flutter_provider_rx/internal/widget/lazy_indexed_stack.dart';
-import 'package:flutter_provider_rx/main.dart';
-import 'package:flutter_provider_rx/provider/main_provider.dart';
 import 'package:flutter_provider_rx/views/empty.dart';
 import 'package:flutter_provider_rx/views/home/home_screen.dart';
 import 'package:flutter_provider_rx/views/profile/profile_screen.dart';
-import 'package:provider/provider.dart';
 
 enum MainTab {
   home,
@@ -18,11 +16,9 @@ enum MainTab {
 }
 
 class MainScreen extends StatefulWidget {
-  final int index;
   final MainTab tab;
-  final Widget child;
 
-  MainScreen({Key key, this.child, this.tab, this.index = 0}) : super(key: key) {
+  MainScreen({Key key, this.tab}) : super(key: key) {
     assert(tab.index != -1);
   }
 
@@ -30,7 +26,7 @@ class MainScreen extends StatefulWidget {
   _MainScreenState createState() => _MainScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
+class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
@@ -42,12 +38,12 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
           children: [
             Expanded(
               child: LazyIndexedStack(
-                index: widget.index,
-                children: [
-                  HomeScreen(kind: Provider.of<MainProvider>(context, listen: false).homeData.currentTabName),
-                  const EmptyScreen(),
-                  const EmptyScreen(),
-                  const ProfileScreen(),
+                index: widget.tab.index,
+                children: const [
+                  HomeScreen(),
+                  EmptyScreen(),
+                  EmptyScreen(),
+                  ProfileScreen(),
                 ],
               ),
             ),
@@ -69,17 +65,11 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
 
   void _tapBottomBar(int index) {
     String _path = '';
-    if(index == 0) {
-      appController.router.of(context).goNamed(AppPage.home.name, params: {
-        AppPage.home.param: Provider.of<MainProvider>(context, listen: false).homeData.currentTabName
-      });
-    }
-    else{
-      if(index == 1) _path = AppPage.store.path;
-      if(index == 2) _path = AppPage.bag.path;
-      if(index == 3) _path = AppPage.profile.path;
-      appController.router.of(context).go(_path);
-    }
+    if(index == 0) _path = AppPage.home.path;
+    if(index == 1) _path = AppPage.store.path;
+    if(index == 2) _path = AppPage.bag.path;
+    if(index == 3) _path = AppPage.profile.path;
+    appController.router.of(context).go(_path);
   }
 }
 

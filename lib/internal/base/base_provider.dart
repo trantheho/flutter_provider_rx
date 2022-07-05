@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_provider_rx/services/local/hive_storage.dart';
 import 'package:provider/provider.dart';
+import 'package:rxdart/rxdart.dart';
 
 BuildContext _mainContext;
 BuildContext get mainContext => _mainContext;
@@ -16,24 +17,19 @@ abstract class BaseProvider {
   }
 }
 
-/// provider for loading
-class LoadingProvider extends ChangeNotifier {
-  bool _isLoading = false;
 
-  bool get loading => _isLoading;
+class LoadingManager{
+  final _loadingStream = BehaviorSubject<bool>();
+  ValueStream get stream => _loadingStream.stream;
 
-  void show(){
-    _isLoading = true;
-    notifyListeners();
-  }
+  void hide() => _loadingStream.add(false);
 
-  void hide(){
-    _isLoading = false;
-    notifyListeners();
-  }
+  void show()=> _loadingStream.add(true);
+
+  void dispose()=> _loadingStream.close();
 }
 
-/// provider for locale and language
+
 class LocaleProvider extends ChangeNotifier {
   Locale locale;
 

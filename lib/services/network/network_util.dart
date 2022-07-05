@@ -11,7 +11,7 @@ class NetworkingUtil {
     initLogic();
   }
 
-  static final NetworkingUtil _instance = new NetworkingUtil._private();
+  static final NetworkingUtil _instance = NetworkingUtil._private();
 
   factory NetworkingUtil() => _instance;
 

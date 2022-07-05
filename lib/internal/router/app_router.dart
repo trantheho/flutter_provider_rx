@@ -13,108 +13,108 @@ import 'package:flutter_provider_rx/views/onboarding/onboarding_screen.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-class AppRouter{
+class AppRouter {
   final AuthProvider _authProvider;
-  GoRouter get goRouter => _goRouter;
-  final GoRouter _goRouter;
+
   static const _scaffoldKey = ValueKey<String>('App scaffold');
+  final GoRouter _goRouter;
+  GoRouter get goRouter => _goRouter;
 
-  AppRouter(this._authProvider) : _goRouter = GoRouter(
-    debugLogDiagnostics: true,
-    refreshListenable: _authProvider,
-    urlPathStrategy: UrlPathStrategy.path,
-    initialLocation: AppPage.root.path,
-    errorBuilder: (_, state) => ErrorScreen(error: state.error.toString(),),
-    routes: <GoRoute>[
-      GoRoute(
-        path: AppPage.root.path,
-        name: AppPage.root.name,
-        redirect: (state) => AppPage.home.path.replaceAll(':${AppPage.home.param}', 'popular'),
-      ),
-      GoRoute(
-        path: AppPage.login.path,
-        name: AppPage.login.name,
-        builder: (_, state) => const LoginScreen(),
-      ),
-      GoRoute(
-        path: AppPage.home.path,
-        name: AppPage.home.name,
-        pageBuilder: (context, state) => FadeTransitionPage(
-          key: _scaffoldKey,
-          child: MainScreen(
-            tab: MainTab.home,
-            index: 0,
-            //child: HomeScreen(kind: state.params[AppPage.home.param]),
+  AppRouter(this._authProvider)
+      : _goRouter = GoRouter(
+          debugLogDiagnostics: true,
+          refreshListenable: _authProvider,
+          urlPathStrategy: UrlPathStrategy.path,
+          initialLocation: AppPage.root.path,
+          errorBuilder: (_, state) => ErrorScreen(
+            error: state.error.toString(),
           ),
-        ),
-        routes: [
-          GoRoute(
-            path: AppPage.book.path,
-            name: AppPage.book.name,
-            builder: (context, state) {
-              final _bookId = state.params[AppPage.book.param];
-              final _book = mainContext
-                        .watch<MainProvider>()
-                        .homeData
-                        .popularList
-                        .firstWhere((element) => element.id == _bookId, orElse: () => Book(
-                image: "https://photos.animetvn.tv/upload/film/006T5GTEly1ggmu3oerihj30u01hc7wi.png",
-                name: "Tây Du",
-                subName: "The Ton Ngo Khong",
-                id: '0',
-              ));
+          routes: <GoRoute>[
+            GoRoute(
+              path: AppPage.root.path,
+              name: AppPage.root.name,
+              redirect: (state) => AppPage.home.path,
+            ),
+            GoRoute(
+              path: AppPage.login.path,
+              name: AppPage.login.name,
+              builder: (_, state) => const LoginScreen(),
+            ),
+            GoRoute(
+              path: AppPage.home.path,
+              name: AppPage.home.name,
+              pageBuilder: (context, state) => FadeTransitionPage(
+                key: _scaffoldKey,
+                child: MainScreen(
+                  tab: MainTab.home,
+                ),
+              ),
+              routes: [
+                GoRoute(
+                  path: AppPage.book.path,
+                  name: AppPage.book.name,
+                  builder: (context, state) {
+                    final _bookId = state.params[AppPage.book.param];
+                    final _book = state.extra as Book;
 
-              return BookDetailScreen(book: _book);
-            },
-          ),
-        ],
-      ),
-      GoRoute(
-        path: AppPage.store.path,
-        name: AppPage.store.name,
-        pageBuilder: (context, state) => FadeTransitionPage(
-          key: _scaffoldKey,
-          child: MainScreen(
-            tab: MainTab.store,
-            index: 1,
-            //child: const EmptyScreen(),
-          ),
-        ),
-      ),
-      GoRoute(
-        path: AppPage.bag.path,
-        name: AppPage.bag.name,
-        pageBuilder: (context, state) => FadeTransitionPage(
-          key: _scaffoldKey,
-          child: MainScreen(
-            tab: MainTab.bag,
-            index: 2,
-            //child: const EmptyScreen(),
-          ),
-        ),
-      ),
-      GoRoute(
-        path: AppPage.profile.path,
-        name: AppPage.profile.name,
-        pageBuilder: (context, state) => FadeTransitionPage(
-          key: _scaffoldKey,
-          child: MainScreen(
-            tab: MainTab.profile,
-            index: 3,
-            //child: const ProfileScreen(),
-          ),
-        ),
-      ),
-    ],
-    redirect: (state) => _guard(_authProvider, state),
-    navigatorBuilder: (_, state, child) => _authProvider.loading ? const OnBoardingScreen() : child,
-  );
+                    return BookDetailScreen(book: _book);
+                  },
+                  routes: [
+                    GoRoute(
+                      path: AppPage.book2.path,
+                      name: AppPage.book2.name,
+                      builder: (context, state) {
+                        final _bookId = state.params[AppPage.book2.param];
+                        final _book = state.extra as Book;
+
+                        return BookDetailScreen(book: _book);
+                      },
+                    ),
+                  ]
+                ),
+
+              ],
+            ),
+            GoRoute(
+              path: AppPage.store.path,
+              name: AppPage.store.name,
+              pageBuilder: (context, state) => FadeTransitionPage(
+                key: _scaffoldKey,
+                child: MainScreen(
+                  tab: MainTab.store,
+                ),
+              ),
+            ),
+            GoRoute(
+              path: AppPage.bag.path,
+              name: AppPage.bag.name,
+              pageBuilder: (context, state) => FadeTransitionPage(
+                key: _scaffoldKey,
+                child: MainScreen(
+                  tab: MainTab.bag,
+                ),
+              ),
+            ),
+            GoRoute(
+              path: AppPage.profile.path,
+              name: AppPage.profile.name,
+              pageBuilder: (context, state) => FadeTransitionPage(
+                key: _scaffoldKey,
+                child: MainScreen(
+                  tab: MainTab.profile,
+                ),
+              ),
+            ),
+          ],
+          redirect: (state) => _guard(_authProvider, state),
+          navigatorBuilder: (_, state, child) => _authProvider.loading ? const OnBoardingScreen() : child,
+        );
 
   static String _guard(AuthProvider _authProvider, GoRouterState state) {
     final _isLogin = _authProvider.isLoggedIn;
     final _loginLocation = state.subloc == state.namedLocation(AppPage.login.name);
-    if(!_isLogin) return _loginLocation ? null : AppPage.login.path;
-    if(_isLogin && _loginLocation) return AppPage.root.path;
+    if (!_isLogin) return _loginLocation ? null : AppPage.login.path;
+    if (_isLogin && _loginLocation) return AppPage.root.path;
     return null;
   }
 
@@ -123,17 +123,17 @@ class AppRouter{
   void pop() => _goRouter.location != AppPage.root.path ? _goRouter.pop() : null;
 }
 
-
 /// TransitionPage
 class FadeTransitionPage extends CustomTransitionPage<void> {
   FadeTransitionPage({
     @required LocalKey key,
     @required Widget child,
   }) : super(
-      key: key,
-      transitionsBuilder: (c, animation, a2, child) => FadeTransition(
-        opacity: animation.drive(CurveTween(curve: Curves.easeIn)),
-        child: child,
-      ),
-      child: child);
+          key: key,
+          transitionsBuilder: (c, animation, a2, child) => FadeTransition(
+            opacity: animation.drive(CurveTween(curve: Curves.easeIn)),
+            child: child,
+          ),
+          child: child,
+        );
 }

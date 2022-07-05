@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_provider_rx/di/app_di.dart';
 import 'package:flutter_provider_rx/internal/router/route_utils.dart';
-import 'package:flutter_provider_rx/main.dart';
 import 'package:flutter_provider_rx/models/book_model.dart';
 import 'package:flutter_provider_rx/provider/home_provider.dart';
 import 'package:flutter_provider_rx/provider/main_provider.dart';
@@ -46,10 +46,13 @@ class _PopularTabState extends State<PopularTab> with AutomaticKeepAliveClientMi
     );
   }
 
-  void _toBookDetail(Book book, {@required BuildContext context}){
-    appController.router.of(context).pushNamed(AppPage.book.name, params: {
-      AppPage.home.param: widget.kind,
-      AppPage.book.param: book.id,
-    });
+  void _toBookDetail(Book book, {@required BuildContext context}) {
+    appController.router.of(context).pushNamed(
+          AppPage.book.name,
+          params: {
+            AppPage.book.param: book.id,
+          },
+          extra: book,
+        );
   }
 }

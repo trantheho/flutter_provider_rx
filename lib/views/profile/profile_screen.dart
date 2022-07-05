@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_provider_rx/commands/authenticate_command/logout_command.dart';
-import 'package:flutter_provider_rx/main.dart';
+import 'package:flutter_provider_rx/di/app_di.dart';
+import 'package:flutter_provider_rx/internal/app_controller.dart';
 import 'package:flutter_provider_rx/provider/auth_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -16,9 +17,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     super.initState();
-    if(mounted){
-      print('profile');
-    }
   }
 
 
@@ -26,19 +24,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
+        /*leading: IconButton(
           onPressed: (){
-            appController.router.pop();
+            //appController.router.pop();
           },
           icon: const Icon(Icons.arrow_back, color: Colors.black,),
-        ),
+        ),*/
       ),
       body: Center(
         child: ElevatedButton(
-          onPressed: () {
-            LogoutCommand().run();
-            context.read<AuthProvider>().updateLoggedIn(false);
-          },
+          onPressed: logout,
           child: const Text('logout'),
         ),
       ),
@@ -46,6 +41,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   void logout(){
-
+    context.read<AuthProvider>().updateLoggedIn(false);
+    LogoutCommand().run();
   }
 }
+

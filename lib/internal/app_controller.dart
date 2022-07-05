@@ -4,26 +4,26 @@ import 'package:flutter_provider_rx/internal/utils/app_routes.dart';
 import 'package:flutter_provider_rx/internal/widget/dialog.dart';
 import 'package:flutter_provider_rx/provider/auth_provider.dart';
 import 'package:flutter_provider_rx/services/local/hive_storage.dart';
+import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'base/base_provider.dart';
 
 class AppController {
-  final LoadingProvider _loading;
+  final LoadingManager _loading;
   final LocaleProvider _locale;
   final AppRouter _router;
   final DialogController _dialog;
   final HiveStorage _storage;
   final Toast _toast;
 
-  AppController() :
-    _loading = mainContext.read<LoadingProvider>(),
-    _locale = mainContext.read<LocaleProvider>(),
-    _router = AppRouter(mainContext.read<AuthProvider>()),
-    _dialog = DialogController(),
-    _storage = HiveStorage.instance,
-    _toast = Toast();
-
+  AppController()
+      : _locale = mainContext.read<LocaleProvider>(),
+        _router = AppRouter(mainContext.read<AuthProvider>()),
+        _storage = HiveStorage.instance,
+        _dialog = DialogController(),
+        _loading = LoadingManager(),
+        _toast = Toast();
 
   DialogController get dialog => _dialog;
 
@@ -31,7 +31,7 @@ class AppController {
 
   Toast get toast => _toast;
 
-  LoadingProvider get loading => _loading;
+  LoadingManager get loading => _loading;
 
   LocaleProvider get locale => _locale;
 

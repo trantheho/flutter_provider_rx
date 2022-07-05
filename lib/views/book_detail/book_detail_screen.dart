@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_provider_rx/di/app_di.dart';
+import 'package:flutter_provider_rx/internal/app_controller.dart';
+import 'package:flutter_provider_rx/internal/router/route_utils.dart';
 import 'package:flutter_provider_rx/internal/utils/styles.dart';
 import 'package:flutter_provider_rx/models/book_model.dart';
 import 'package:flutter_provider_rx/provider/book_provider.dart';
@@ -40,15 +43,24 @@ class _BookDetailScreenState extends State<BookDetailScreen> {
             const SizedBox(
               height: 20,
             ),
-            Container(
-              width: 250,
-              height: 350,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: NetworkImage(widget.book.image),
-                  fit: BoxFit.cover,
+            InkWell(
+              onTap: (){
+                debugPrint('sadkjask');
+                appController.router.of(context).pushNamed(AppPage.book2.name, extra: book, params: {
+                  AppPage.book.param: book.id,
+                  AppPage.book2.param: book.id,
+                });
+              },
+              child: Container(
+                width: 250,
+                height: 350,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: NetworkImage(widget.book.image),
+                    fit: BoxFit.cover,
+                  ),
+                  borderRadius: BorderRadius.circular(12),
                 ),
-                borderRadius: BorderRadius.circular(12),
               ),
             ),
             const SizedBox(
